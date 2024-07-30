@@ -109,4 +109,64 @@ int main(){
 		VueloEsp++;
 	}else{
 		cout<<"Se ha alcanzado el máximo número de vuelos creados."<<endl;
+		}
+	}
+	
+	void mostrarvuelo(){
+		system("cls");
+		for(int i=0;i<VueloEsp;i++){
+			cout<<"Vuelo Nº"<<i+1<<endl;
+			cout<<"Destino: "<<Plane[i].destino<<endl;
+			cout<<"Fecha: "<<Plane[i].fechaVuelo<<endl;
+			cout<<"Hora de partida: "<<Plane[i].horaVuelo<<endl;
+			cout<<"Numero de vuelo: "<<Plane[i].numeVuelo<<endl;
+			cout<<"Precio: "<<Plane[i].precio<<endl;
+			cout<<"----------------------------------"<<endl;
+			cout<<"\n";
+		}
+		system("pause");
+	}
+	void modificarvuelo(){
+		system("cls");
+		mostrarvuelo();
+		int numeVuelo, indice=0;//indice ayudara a seleccionar y establecer el espacio de struct datosvuelo a modificar
+		cout<<"Ingrese el numero de vuelo que va a modificar: ";
+		cin>>numeVuelo;
+		for(int i=0;i<VueloEsp;i++){
+			if(Plane[i].numeVuelo==numeVuelo){
+				indice=i;
+				break;
+			}
+		}
+		if(indice!=0){//Mostrara los datos anteriores para asistir al usuario en la modificacion
+			cout<<"Modificando vuelo Nª"<<numeVuelo<<endl;
+			cout<<"Destino actual: "<<Plane[indice].destino<<endl;
+			cout<<"Nuevo destino: ";
+			cin.ignore();
+			cin.getline(Plane[indice].destino,20);
+			cout<<"Fecha actual: "<<Plane[indice].fechaVuelo<<endl;
+			cout<<"Nueva fecha: ";
+			cin>>Plane[indice].fechaVuelo;
+			cout<<"Hora actual: "<<Plane[indice].horaVuelo<<endl;
+			cout<<"Nueva hora: ";
+			cin>>Plane[indice].horaVuelo;
+			cout<<"Numero de vuelo actual: "<<Plane[indice].numeVuelo<<endl;
+			cout<<"Nuevo numero de vuelo: ";
+			cin>>Plane[indice].numeVuelo;
+			cout<<"Precio actual: "<<Plane[indice].precio<<endl;
+			cout<<"Nuevo precio: ";
+			cin>>Plane[indice].precio;
+		}else{
+			cout<<"Vuelo no encontrado."<<endl;
+		}
+		system("pause");
+	}
+	void cancelarvuelo(){
+		system("cls");
+	}
+	void precios(){
+		
+	}
+	void passenger(){
+		
 	}
