@@ -129,7 +129,7 @@ int main(){
 	void modificarvuelo(){
 		system("cls");
 		mostrarvuelo();
-		int numeVuelo, indice=0;//indice ayudara a seleccionar y establecer el espacio de struct datosvuelo a modificar
+		int numeVuelo, indice=-1;//indice ayudara a seleccionar y establecer el espacio de struct datosvuelo a modificar
 		cout<<"Ingrese el numero de vuelo que va a modificar: ";
 		cin>>numeVuelo;
 		for(int i=0;i<VueloEsp;i++){
@@ -161,29 +161,49 @@ int main(){
 		}
 		system("pause");
 	}
-	void cancelarvuelo(){
-		system("cls");
-		mostrarvuelo();
-		int numeVuelo, indice=0;
-		cout<<"Ingrese el numero del vuelo a cancelar."<<endl;
-		cin>>numeVuelo;
-		for(int i=0;i<VueloEsp;i++){
-			if(Plane[i].numeVuelo==numeVuelo){
-				indice=i;
-				break;
+	void cancelarvuelo() {
+		while (true) {
+			system("cls");
+			mostrarvuelo();
+			int numeVuelo, indice=-1;
+			cout<<"Ingrese el número del vuelo a cancelar (o -1 para salir al menú principal): ";
+			cin>>numeVuelo;
+			if(numeVuelo==-1){
+				return;
+			}
+			int index=-1;
+			for(int i=0;i<VueloEsp;i++){
+				if(Plane[i].numeVuelo==numeVuelo){
+					index = i;
+					break;
+				}
+			}
+			if(index!=-1){
+				int confirmacion;
+				while(true){
+					cout<<"Solo para estar seguros... ¿Cancelar vuelo? Si (1) No (0): ";
+					cin>>confirmacion;
+					if(confirmacion==1){
+						for(int i=indice;i<VueloEsp-1;i++){
+							Plane[i]=Plane[i+1];
+						}
+						VueloEsp--;
+						cout << "Vuelo cancelado exitosamente."<<endl;
+						system("pause");
+						return;
+					}else if(confirmacion==0){
+						cout<<"Cancelación de vuelo cancelada."<<endl;
+						break;
+					}else{
+						cout<<"Opción inválida. Por favor, ingrese 1 para sí o 0 para no." << endl;
+					}
+				}
+			}else{
+				cout<<"Vuelo no encontrado."<<endl;
 			}
 		}
-		if(indice!=-1){
-			for(int i=indice;i<VueloEsp-1;i++){
-				Plane[i]=Plane[i+1];
-			}
-			VueloEsp--;
-			cout<<"El vuelo a sido cancelado correctamente."<<endl;
-		}else{
-			cout<<"Vuelo no encontrado."<<endl;
-		}
-		system("pause");
 	}
+	
 	void precios(){
 		
 	}
