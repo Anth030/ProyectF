@@ -60,3 +60,30 @@ int main(){
 		}
 	} while(repetir);
 	return 0;
+}
+	
+	void vuelo(){
+		system("cls");
+		int opc;
+		cout<<"1.1. Generar vuelo."<<endl;
+		cout<<"1.2. Mostrar vuelos."<<endl;
+		cout<<"1.3. Modificar vuelo."<<endl;
+		cout<<"1.4. Cancelar vuelo."<<endl;
+		cout<<"1.5. Volver."<<endl;
+		cin>>opc;
+		switch(opc){
+		case 1:
+			generarvuelo();
+			break;
+		case 2:
+			mostrarvuelo();
+			break;
+		case 3:
+			modificarvuelo();
+			break;
+		case 4:
+			cancelarvuelo();
+		case 5:
+			break;
+		}
+	}
