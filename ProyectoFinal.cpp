@@ -26,12 +26,13 @@ void mostrarvuelo();
 void modificarvuelo();
 void cancelarvuelo();
 
-void passenger();
-void buscarReserva();
-void mostrarReserva();
-
 void precios();
-void modificarprecios();
+
+void reserva();
+void generarReserva();
+void mostrarReserva();
+void modificarReserva();
+void cancelarReserva();
 
 int VueloEsp=0;//Este valor es para que al crearse un vuelo solo
 //avance en 1 el espacio de struct "datosvuelo" y asi generar vuelos individualmente
@@ -43,8 +44,8 @@ int main(){
 		system("cls");
 		cout<<"-------SISTEMA DE AEROPUERTO-------"<<endl;
 		cout<<"1. Vuelos."<<endl;
-		cout<<"2. Pasajeros y Reservas."<<endl;
-		cout<<"3. Precios."<<endl;
+		cout<<"2. Reservas."<<endl;
+		cout<<"3. Modificar Precios."<<endl;
 		cout<<"4. Salir. "<<endl;
 		cin>>opcion;
 		switch(opcion){
@@ -52,7 +53,7 @@ int main(){
 			vuelo();
 			break;
 		case 2:
-			passenger();
+			reserva();
 			break;
 		case 3:
 			precios();
@@ -204,12 +205,37 @@ int main(){
 		}
 	}
 	
+	void reserva(){
+		system("cls");
+		int opc;
+		cout<<"2.1. Generar una reserva"<<endl;
+		cout<<"2.2. Mostrar reservas"<<endl;
+		cout<<"2.3. Modificar reservas"<<endl;
+		cout<<"2.4. Cancelar reserva"<<endl;
+		cin>>opc;
+		switch(opc){
+		case 1:
+			generarvuelo();
+			break;
+		case 2:
+			mostrarvuelo();
+			break;
+		case 3:
+			modificarvuelo();
+			break;
+		case 4:
+			cancelarvuelo();
+		case 5:
+			break;
+		}
+	}
+	
 	void precios(){
 		while(true){
 			system("cls");
 			mostrarvuelo();
 			int numeVuelo, indice=-1;
-			cout<<"Ingrese el numero de vuelo para cambiar su precio";
+			cout<<"Ingrese el numero de vuelo para cambiar su precio"<<endl;
 			cout<<"(o ponga -1 para volver al menu principal): ";
 			cin>>numeVuelo;
 			if(numeVuelo==-1){
@@ -235,6 +261,3 @@ int main(){
 		}
 	}
 	
-	void passenger(){
-		
-	}
