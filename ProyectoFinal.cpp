@@ -18,6 +18,7 @@ struct datacliente{
 	int telefono;
 	int avion;
 	int costoboleto;
+	int asiento[2];//añadi el asiento que ocupara la reserva en el vuelo
 }datosclient[50];
 
 void vuelo();
@@ -34,6 +35,8 @@ void mostrarReserva();
 void modificarReserva();
 void cancelarReserva();
 
+int avionAsien[21][7]={0};//Este arreglo se mostrara al momento de seleccionar el asiento para la reserva(mas detalles en la funcion generarReserva)
+int reservPosic=0;//nueva variable global, funciona igual que VueloEsp, para comtrolar los espacios en struct datacliente
 int VueloEsp=0;//Este valor es para que al crearse un vuelo solo
 //avance en 1 el espacio de struct "datosvuelo" y asi generar vuelos individualmente
 //repitiendo la selecion de los menus
@@ -139,7 +142,8 @@ int main(){
 				break;
 			}
 		}
-		if(indice!=-1){//Mostrara los datos anteriores para asistir al usuario en la modificacion
+		if(indice!=-1){
+			//Mostrara los datos anteriores para asistir al usuario en la modificacion
 			cout<<"Modificando vuelo Nª"<<numeVuelo<<endl;
 			cout<<"Destino actual: "<<Plane[indice].destino<<endl;
 			cout<<"Nuevo destino: ";
@@ -172,14 +176,13 @@ int main(){
 			if(numeVuelo==-1){
 				return;
 			}
-			int index=-1;
 			for(int i=0;i<VueloEsp;i++){
 				if(Plane[i].numeVuelo==numeVuelo){
-					index = i;
+					indice=i;
 					break;
 				}
 			}
-			if(index!=-1){
+			if(indice!=-1){
 				int confirmacion;
 				while(true){
 					cout<<"Solo para estar seguros... ¿Cancelar vuelo? Si (1) No (0): ";
@@ -188,7 +191,7 @@ int main(){
 						for(int i=indice;i<VueloEsp-1;i++){
 							Plane[i]=Plane[i+1];
 						}
-						VueloEsp--;
+						VueloEsp--;//cuando se cancela un vuelo, VueloEsp reduce en -1 y los vuelos que se encontraban despues del vuelo borrado, recorren un espacio hacia atras
 						cout << "Vuelo cancelado exitosamente."<<endl;
 						system("pause");
 						return;
@@ -215,20 +218,98 @@ int main(){
 		cin>>opc;
 		switch(opc){
 		case 1:
-			generarvuelo();
+			generarReserva();
 			break;
 		case 2:
-			mostrarvuelo();
+			mostrarReserva();
 			break;
 		case 3:
-			modificarvuelo();
+			modificarReserva();
 			break;
 		case 4:
-			cancelarvuelo();
+			cancelarReserva();
 		case 5:
 			break;
 		}
 	}
+	void generarReserva() {
+		int numeVuelo;
+		int indice=-1;
+		system("cls");
+		mostrarvuelo();
+		cout<<"Ingrese el numero del vuelo para reservar: ";
+		cin >> numeVuelo;
+		for(int i=0;i<VueloEsp;i++){
+			if(Plane[i].numeVuelo==numeVuelo){
+				indice=i;//si no se cumple el if, indice seguira siendo -1
+				break;
+				}
+			}
+		if(indice==-1){
+			cout<<"Vuelo no encontrado."<<endl;
+			system("pause");
+			return;//vuelve al menu principal
+		}
+		cin.ignore();
+		cout<<"Ingrese nombres: ";
+		cin.getline(datosclient[reservPosic].nombres,30);
+		cout<<"Ingrese apellidos: ";
+		cin.getline(datosclient[reservPosic].apellidos,30);
+		cout<<"Ingrese DNI: ";
+		cin>>datosclient[reservPosic].DNI;
+		cout<<"Ingrese correo: ";
+		cin>>datosclient[reservPosic].correo;
+		cout<<"Ingrese telefono: ";
+		cin>>datosclient[reservPosic].telefono;
+		datosclient[reservPosic].avion=numeVuelo;//se asigna el numero del vuelo a la reserva del pasajero
+		datosclient[reservPosic].costoboleto=Plane[indice].precio;//igualmente al costo de su boleto
+		
+		int fila, columna;
+		while(true){
+			system("cls");
+			int cont=0;
+			for (int i=1; i<=20; i++) {
+				for (int j=1;j<=6;j++) {
+					if (j==4) {
+						cont++;
+						cout<< "   " <<cont<<"  ";//separadores y cont mostrara los numeros de las final
+					}
+					cout<<" "<<avionAsien[i][j];//separador, para que los 0 no se vean tan juntos
+				}
+				cout<<"\n";
+			}
+				
+				cout<<"Escoja un lugar "<<endl;
+				cout<<"Fila: ";
+				cin>>fila;
+				cout<<"Columna: ";
+				cin>>columna;
+				
+				if(avionAsien[fila][columna]==0){//identificara si el espacio es un 0 (vacio)
+					avionAsien[fila][columna]=1;//si se cumple el if, la seleccion se volvera 1
+					datosclient[reservPosic].asiento[0]=fila;//se le da los numeros de las posiciones al asiento del datosclient que se esta usando
+					datosclient[reservPosic].asiento[1]=columna;
+					break;
+				}else{
+					cout<<"El asiento ya está ocupado. Seleccione otro asiento."<<endl;
+					system("pause");
+				}
+			}
+			
+			cout<<"Reserva generada correctamente."<<endl;
+			reservPosic++;//cuando se realice la reserva con exito, aumentara en 1 su valor y asi se podra llenar progresivamente
+			system("pause");
+		}
+	void mostrarReserva(){
+		
+	}
+	void modificarReserva(){
+		
+	}
+	void cancelarReserva(){
+		
+	}
+	
 	
 	void precios(){
 		while(true){
