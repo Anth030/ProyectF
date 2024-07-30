@@ -138,7 +138,7 @@ int main(){
 				break;
 			}
 		}
-		if(indice!=0){//Mostrara los datos anteriores para asistir al usuario en la modificacion
+		if(indice!=-1){//Mostrara los datos anteriores para asistir al usuario en la modificacion
 			cout<<"Modificando vuelo Nª"<<numeVuelo<<endl;
 			cout<<"Destino actual: "<<Plane[indice].destino<<endl;
 			cout<<"Nuevo destino: ";
@@ -163,6 +163,26 @@ int main(){
 	}
 	void cancelarvuelo(){
 		system("cls");
+		mostrarvuelo();
+		int numeVuelo, indice=0;
+		cout<<"Ingrese el numero del vuelo a cancelar."<<endl;
+		cin>>numeVuelo;
+		for(int i=0;i<VueloEsp;i++){
+			if(Plane[i].numeVuelo==numeVuelo){
+				indice=i;
+				break;
+			}
+		}
+		if(indice!=-1){
+			for(int i=indice;i<VueloEsp-1;i++){
+				Plane[i]=Plane[i+1];
+			}
+			VueloEsp--;
+			cout<<"El vuelo a sido cancelado correctamente."<<endl;
+		}else{
+			cout<<"Vuelo no encontrado."<<endl;
+		}
+		system("pause");
 	}
 	void precios(){
 		
