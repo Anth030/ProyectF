@@ -205,8 +205,36 @@ int main(){
 	}
 	
 	void precios(){
-		
+		while(true){
+			system("cls");
+			mostrarvuelo();
+			int numeVuelo, indice=-1;
+			cout<<"Ingrese el numero de vuelo para cambiar su precio";
+			cout<<"(o ponga -1 para volver al menu principal): ";
+			cin>>numeVuelo;
+			if(numeVuelo==-1){
+				return;
+			}
+			for(int i=0;i<VueloEsp;i++){
+				if(Plane[i].numeVuelo==numeVuelo){
+					indice=i;
+					break;
+				}
+			}
+			if(indice!=-1){
+				float nuevoPrecio;//Permitira actualizar el precio del vuelo
+				cout<<"Ingrese el nuevo precio para el vuelo Nº"<<Plane[indice].numeVuelo<<endl;
+				cin>>nuevoPrecio;
+				Plane[indice].precio=nuevoPrecio;
+				cout<<"El precio fue actualizado."<<endl;
+				system("pause");
+				return;
+			}else{
+				cout<<"Numero de vuelo no encontrado, Intente nuevamente."<<endl;
+			}
+		}
 	}
+	
 	void passenger(){
 		
 	}
