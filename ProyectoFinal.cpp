@@ -300,9 +300,29 @@ int main(){
 			reservPosic++;//cuando se realice la reserva con exito, aumentara en 1 su valor y asi se podra llenar progresivamente
 			system("pause");
 		}
-	void mostrarReserva(){
+	void mostrarReserva(){//mostrara todas las reservas creadas
+		system("cls");
+		if(reservPosic==0){//si no hay reservas, manda un mensaje en la pantalla y vuelve al menu principal
+			cout<<"No hay reservas para mostrar."<< endl;
+			system("pause");
+			return;
+		}
 		
-	}
+		cout<<"------ RESERVAS ------"<<endl;
+		for(int i=0;i<reservPosic;i++){
+			cout<<"Reserva Nº"<<i+1<<endl;
+			cout<<"Nombre: "<<datosclient[i].nombres<<endl;
+			cout<<"Apellidos: "<<datosclient[i].apellidos<<endl;
+			cout<<"DNI: "<<datosclient[i].DNI<<endl;
+			cout<<"Correo: "<<datosclient[i].correo<<endl;
+			cout<<"Teléfono: "<<datosclient[i].telefono<<endl;
+			cout<<"Número de vuelo: "<<datosclient[i].avion<<endl;
+			cout<<"Costo del boleto: "<<datosclient[i].costoboleto<<endl;
+			cout<<"Asiento: Fila "<<datosclient[i].asiento[0]<<", Columna "<<datosclient[i].asiento[1]<<endl;
+			cout<<"-------------------------" << endl;
+		}
+		system("pause");
+	}	
 	void modificarReserva(){
 		
 	}
