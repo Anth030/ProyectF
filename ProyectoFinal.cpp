@@ -33,6 +33,9 @@ void mostrarReserva();
 void precios();
 void modificarprecios();
 
+int VueloEsp=0;//Este valor es para que al crearse un vuelo solo
+//avance en 1 el espacio de struct "datosvuelo" y asi generar vuelos individualmente
+//repitiendo la selecion de los menus
 int main(){
 	int opcion;
 	bool repetir=true;
@@ -86,4 +89,24 @@ int main(){
 		case 5:
 			break;
 		}
+	}
+
+//llenando la memoria del struct datosvuelo(un espacio)
+	void generarvuelo(){
+		if(VueloEsp<6){//VueloEsp, valor global importante para llenar el struct
+		system("cls");
+		cin.ignore();
+		cout<<"Destino del vuelo "<<"Nº"<<VueloEsp+1<<endl;
+		cin.getline(Plane[VueloEsp].destino,20);
+		cout<<"Fecha de vuelo "<<endl;
+		cin>>Plane[VueloEsp].fechaVuelo;
+		cout<<"Hora de vuelo "<<endl;
+		cin>>Plane[VueloEsp].horaVuelo;
+		cout<<"Nº numero de vuelo "<<endl;
+		cin>>Plane[VueloEsp].numeVuelo;
+		cout<<"Precio de vuelo "<<endl;
+		cin>>Plane[VueloEsp].precio;
+		VueloEsp++;
+	}else{
+		cout<<"Se ha alcanzado el máximo número de vuelos creados."<<endl;
 	}
