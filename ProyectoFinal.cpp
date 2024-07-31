@@ -1,4 +1,4 @@
-//codigo casi finalizado
+//funciones implementadas y trabajando
 #include <iostream>
 #include <cstring>
 using namespace std;
@@ -45,11 +45,14 @@ int main(){
 	bool repetir=true;
 	do{
 		system("cls");
-		cout<<"-------SISTEMA DE AEROPUERTO-------"<<endl;
-		cout<<"1. Vuelos."<<endl;
-		cout<<"2. Reservas."<<endl;
-		cout<<"3. Modificar Precios."<<endl;
-		cout<<"4. Salir. "<<endl;
+		cout<<" "<<endl;
+		cout<<" "<<endl;
+		cout<<"      <-<-<--SISTEMA DE AEROPUERTO-->->->"<<endl;
+		cout<<" "<<endl;
+		cout<<"         1. Vuelos."<<endl;
+		cout<<"         2. Reservas."<<endl;
+		cout<<"         3. Modificar Precios."<<endl;
+		cout<<"         4. Salir. "<<endl;
 		cin>>opcion;
 		switch(opcion){
 		case 1:
@@ -244,6 +247,7 @@ int main(){
 			break;
 		case 4:
 			cancelarReserva();
+			break;
 		case 5:
 			break;
 		default:
@@ -252,6 +256,7 @@ int main(){
 			break;
 		}
 	}
+//llenando un espacio en datacliente
 	void generarReserva(){
 		system("cls");
 		mostrarvuelo();
@@ -365,7 +370,7 @@ int main(){
 				system("pause");
 				return;
 			}
-			//mostrando vuelos existentes
+			//usando la funcion para mostrar los vuelos en el proceso
 			mostrarvuelo();
 			cout<<" "<<endl;
 			int nuevoVuelo, nuevoIndice=-1;
@@ -457,7 +462,6 @@ int main(){
 				break;
 			}
 		}
-	}
 		//elimina la reserva
 		for(int i=indice;i<reservPosic-1;i++){
 			datosclient[i]=datosclient[i+1];
@@ -466,17 +470,19 @@ int main(){
 		cout<<"Reserva cancelada exitosamente."<<endl;
 		system("pause");
 	}
+	
 	void precios(){
 		while(true){
 			system("cls");
 			mostrarvuelo();
-			int numeVuelo, indice=-1;
+			int numeVuelo;
 			cout<<"Ingrese el numero de vuelo para cambiar su precio"<<endl;
 			cout<<"(o ponga -1 para volver al menu principal): ";
 			cin>>numeVuelo;
 			if(numeVuelo==-1){
 				return;
 			}
+			int indice=-1;
 			for(int i=0;i<VueloEsp;i++){
 				if(Plane[i].numeVuelo==numeVuelo){
 					indice=i;
@@ -484,16 +490,23 @@ int main(){
 				}
 			}
 			if(indice!=-1){
-				float nuevoPrecio;//Permitira actualizar el precio del vuelo
+				float nuevoPrecio;//variable para reemplazar el valor del vuelo seleccionado
 				cout<<"Ingrese el nuevo precio para el vuelo Nº"<<Plane[indice].numeVuelo<<endl;
 				cin>>nuevoPrecio;
+				//valida que el precio no sea negativo
+				if(nuevoPrecio<0){
+					cout<<"El precio no puede ser negativo. Intente nuevamente."<<endl;
+					system("pause");
+					continue;
+				}
+				
 				Plane[indice].precio=nuevoPrecio;
-				cout<<"El precio fue actualizado."<<endl;
+				cout<<"El precio fue actualizado exitosamente."<<endl;
 				system("pause");
 				return;
 			}else{
-				cout<<"Numero de vuelo no encontrado, Intente nuevamente."<<endl;
+				cout<<"Número de vuelo no encontrado, intente nuevamente."<<endl;
+				system("pause");
 			}
 		}
 	}
-	
