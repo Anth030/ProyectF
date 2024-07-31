@@ -108,26 +108,32 @@ int main(){
 
 //llenando la memoria del struct datosvuelo(un espacio)
 	void generarvuelo(){
-		if(VueloEsp<6){//VueloEsp, valor global importante para llenar el struct
-		system("cls");
-		cin.ignore();
-		cout<<"Destino del vuelo "<<"Nº"<<VueloEsp+1<<endl;
-		cin.getline(Plane[VueloEsp].destino,20);
-		cout<<"Fecha de vuelo "<<endl;
-		cin>>Plane[VueloEsp].fechaVuelo;
-		cout<<"Hora de vuelo "<<endl;
-		cin>>Plane[VueloEsp].horaVuelo;
-		cout<<"Nº numero de vuelo "<<endl;
-		cin>>Plane[VueloEsp].numeVuelo;
-		cout<<"Precio de vuelo "<<endl;
-		cin>>Plane[VueloEsp].precio;
-		VueloEsp++;
-	}else{
-		cout<<"Se ha alcanzado el máximo número de vuelos creados."<<endl;
+		if(VueloEsp<6){
+			system("cls");
+			cin.ignore();
+			cout<<"Destino del vuelo Nº"<<VueloEsp+1<<endl;
+			cin.getline(Plane[VueloEsp].destino,20);
+			cout<<"Fecha de vuelo: "<<endl;
+			cin>>Plane[VueloEsp].fechaVuelo;
+			cout<<"Hora de vuelo: "<<endl;
+			cin>>Plane[VueloEsp].horaVuelo;
+			cout<<"Nº número de vuelo: "<<endl;
+			cin>>Plane[VueloEsp].numeVuelo;
+			cout<<"Precio de vuelo: "<<endl;
+			cin>>Plane[VueloEsp].precio;
+			//aqui se crea la matriz para EsqAsien para un vuelo
+			for(int i=1;i<=20;i++){
+				for(int j=1;j<=6;j++){
+					Plane[VueloEsp].EsqAsien[i][j]=0;
+				}
+			}
+			VueloEsp++;
+		}else{
+			cout<<"Se ha alcanzado el máximo número de vuelos creados."<<endl;
 		}
 	}
 	
-	void mostrarvuelo(){
+	void mostrarvuelo(){//muestra todos los vuelos creados
 		system("cls");
 		for(int i=0;i<VueloEsp;i++){
 			cout<<"Vuelo Nº"<<i+1<<endl;
