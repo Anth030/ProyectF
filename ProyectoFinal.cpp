@@ -321,6 +321,7 @@ int main(){
 		}
 		system("pause");
 	}
+	
 	void mostrarReserva(){//mostrara todas las reservas creadas
 		system("cls");
 		if(reservPosic==0){//si no hay reservas, manda un mensaje en la pantalla y vuelve al menu principal
@@ -343,95 +344,78 @@ int main(){
 		}
 		system("pause");
 	}	
-	void modificarReserva() {
-		system("cls");
-		if(reservPosic==0){
-			cout<<"No hay reservas para modificar."<<endl;
-			system("pause");
-			return;
-		}
-		
-		int numeVuelo;
-		cout<<"Ingrese el número del vuelo actual de la reserva a modificar: ";
-		cin>>numeVuelo;
-		
-		int indice=-1;
-		for(int i=0;i<reservPosic;i++){
-			if(datosclient[i].avion==numeVuelo){
-				indice=i;
-				break;
-			}
-		}
-		if(indice==-1){
-			cout<<"Reserva no encontrada para el vuelo número "<<numeVuelo<<endl;
-			system("pause");
-			return;
-		}
-		// muestra los datos de la reserva antes de hacer el cambio
-		cout<<"Modificando reserva para el vuelo Nº"<<numeVuelo<<endl;
-		cout<<"Datos actuales:"<<endl;
-		cout<<"Nombre: "<<datosclient[indice].nombres<<endl;
-		cout<<"Apellidos: "<<datosclient[indice].apellidos<<endl;
-		cout<<"DNI: "<<datosclient[indice].DNI<<endl;
-		cout<<"Correo: "<<datosclient[indice].correo<<endl;
-		cout<<"Teléfono: "<<datosclient[indice].telefono<<endl;
-		cout<<"Asiento actual: Fila "<<datosclient[indice].asiento[0]<<", Columna "<<datosclient[indice].asiento[1]<<endl;
-		//variable para seleccionar nuevo vuelo
-		int nuevoVuelo;
-		cout<<"Ingrese el número del nuevo vuelo al que desea cambiar la reserva: ";
-		cin>>nuevoVuelo;
-		
-		int nuevoIndice=-1;
-		for(int i=0;i<VueloEsp;i++){
-			if(Plane[i].numeVuelo==nuevoVuelo){
-				nuevoIndice=i;
-				break;
-			}
-		}
-		if(nuevoIndice==-1){
-			cout<<"Nuevo vuelo no encontrado."<<endl;
-			system("pause");
-			return;
-		}
-		//esto permite liberar el asiento del vuelo anterior
-		avionAsien[datosclient[indice].asiento[0]][datosclient[indice].asiento[1]] = 0;
-		
-		//asigna el nuevo vuelo
-		datosclient[indice].avion = nuevoVuelo;
-		datosclient[indice].costoboleto = Plane[nuevoIndice].precio;
-		//escoge el asiento en el nuevo vuelo
-		int fila, columna;
-		while(true){
+		void modificarReserva(){
 			system("cls");
-			int cont=0;
-			for(int i=1;i<=20;i++){
-				for(int j=1;j<=6;j++){
-					if(j==4){
-						cont++;
-						cout<<"   "<<cont<<"  ";
-					}
-					cout<<" "<<avionAsien[i][j];
-				}
-				cout<<"\n";
+			if(reservPosic==0){
+				cout<<"No hay reservas para modificar."<<endl;
+				system("pause");
+				return;
 			}
-			cout<<"Escoja un nuevo lugar para el nuevo vuelo"<<endl;
-			cout<<"Fila: ";
+			mostrarReserva();
+			cout<<" "<<endl;
+			int dni, indice=-1;
+			cout<<"Ingrese el DNI de la reserva a modificar: ";
+			cin>>dni;
+			for(int i=0;i<reservPosic;i++){
+				if(datosclient[i].DNI==dni){
+					indice=i;
+					break;
+				}
+			}
+			if(indice==-1){
+				cout<<"Reserva no encontrada para el DNI "<<dni<<endl;
+				system("pause");
+				return;
+			}
+			//mostrando vuelos existentes
+			mostrarvuelo();
+			cout<<" "<<endl;
+			int nuevoVuelo, nuevoIndice=-1;
+			cout<<"Ingrese el número del nuevo vuelo al que desea cambiar la reserva: ";
+			cin>>nuevoVuelo;
+			for(int i=0;i<VueloEsp;i++){
+				if(Plane[i].numeVuelo==nuevoVuelo){
+					nuevoIndice=i;
+					break;
+				}
+			}
+			if(nuevoIndice==-1){
+				cout<<"Nuevo vuelo no encontrado."<<endl;
+				system("pause");
+				return;
+			}
+			//mostrara la matriz de asientos del vuelo al que se cambiara
+			system("cls");
+			cout<<"----Vista de Asientos del Avion---Nº"<<nuevoVuelo<<endl;
+			cout<<"  "<<endl;
+			for(int i=1;i<=20;i++){
+				cout<<"HH    ";
+				for(int j=1;j<=6;j++){
+					cout<<Plane[nuevoIndice].EsqAsien[i][j]<<" ";
+					if(j==3) {
+						cout<<"    ";
+					}
+				}
+				cout<<"    HH"<<endl;
+			}
+			cout<<" "<<endl;
+			
+			int fila, columna;
+			cout<<"Ingrese el número de fila (1-20): ";
 			cin>>fila;
-			cout<<"Columna: ";
+			cout<<"Ingrese el número de columna (1-6): ";
 			cin>>columna;
-			if(avionAsien[fila][columna]==0){
-				avionAsien[fila][columna]=1;
+			if(Plane[nuevoIndice].EsqAsien[fila][columna]==0){
+				Plane[nuevoIndice].EsqAsien[fila][columna]=1;
+				datosclient[indice].avion=nuevoVuelo;
 				datosclient[indice].asiento[0]=fila;
 				datosclient[indice].asiento[1]=columna;
-				break;
-			}else{
-				cout<<"El asiento ya está ocupado. Seleccione otro asiento."<<endl;
-				system("pause");
+				cout<<"Reserva modificada exitosamente."<<endl;
+			} else {
+				cout<<"El asiento ya está ocupado."<<endl;
 			}
+			system("pause");
 		}
-		cout<<"Reserva modificada exitosamente."<<endl;
-		system("pause");
-	}
 	void cancelarReserva(){
 		
 	}
