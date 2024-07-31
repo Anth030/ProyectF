@@ -80,7 +80,7 @@ int main(){
 		int opc;
 		cout<<"1.1. Generar vuelo."<<endl;
 		cout<<"1.2. Mostrar vuelos."<<endl;
-		cout<<"1.3. Modificar vuelo."<<endl;
+		cout<<"1.3. Cambiar o retrasar fecha y hora de vuelo."<<endl;
 		cout<<"1.4. Cancelar vuelo."<<endl;
 		cout<<"1.5. Volver."<<endl;
 		cin>>opc;
@@ -132,7 +132,7 @@ int main(){
 			cout<<"Se ha alcanzado el máximo número de vuelos creados."<<endl;
 		}
 	}
-	
+
 	void mostrarvuelo(){//muestra todos los vuelos creados
 		system("cls");
 		for(int i=0;i<VueloEsp;i++){
@@ -147,11 +147,12 @@ int main(){
 		}
 		system("pause");
 	}
+	//ahora funcion modificarvuelo solo cambia la fecha y hora de un vuelo
 	void modificarvuelo(){
 		system("cls");
 		mostrarvuelo();
-		int numeVuelo, indice=-1;//indice ayudara a seleccionar y establecer el espacio de struct datosvuelo a modificar
-		cout<<"Ingrese el numero de vuelo que va a modificar: ";
+		int numeVuelo, indice=-1;
+		cout<<"Ingrese el número del vuelo que va a modificar: ";
 		cin>>numeVuelo;
 		for(int i=0;i<VueloEsp;i++){
 			if(Plane[i].numeVuelo==numeVuelo){
@@ -160,24 +161,16 @@ int main(){
 			}
 		}
 		if(indice!=-1){
-			//Mostrara los datos anteriores para asistir al usuario en la modificacion
-			cout<<"Modificando vuelo Nª"<<numeVuelo<<endl;
-			cout<<"Destino actual: "<<Plane[indice].destino<<endl;
-			cout<<"Nuevo destino: ";
-			cin.ignore();
-			cin.getline(Plane[indice].destino,20);
-			cout<<"Fecha actual: "<<Plane[indice].fechaVuelo<<endl;
+			cout<<"Modificando vuelo Nº"<<numeVuelo<<endl;
+			cout<<"Fecha anterior: "<<Plane[indice].fechaVuelo<<endl;
 			cout<<"Nueva fecha: ";
 			cin>>Plane[indice].fechaVuelo;
-			cout<<"Hora actual: "<<Plane[indice].horaVuelo<<endl;
+			cout<<"Hora anterior: "<<Plane[indice].horaVuelo<<endl;
 			cout<<"Nueva hora: ";
 			cin>>Plane[indice].horaVuelo;
-			cout<<"Numero de vuelo actual: "<<Plane[indice].numeVuelo<<endl;
-			cout<<"Nuevo numero de vuelo: ";
-			cin>>Plane[indice].numeVuelo;
+			cout<<"Número de vuelo: "<<Plane[indice].numeVuelo<<endl;
 			cout<<"Precio actual: "<<Plane[indice].precio<<endl;
-			cout<<"Nuevo precio: ";
-			cin>>Plane[indice].precio;
+			cout<<"Para cambiar el precio deberá ir a la opción de Precios en el menú principal."<<endl;//una indicacion para el usuario
 		}else{
 			cout<<"Vuelo no encontrado."<<endl;
 		}
