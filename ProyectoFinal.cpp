@@ -176,12 +176,12 @@ int main(){
 		}
 		system("pause");
 	}
-	void cancelarvuelo() {
-		while (true) {
+	void cancelarvuelo(){
+		while(true){
 			system("cls");
 			mostrarvuelo();
 			int numeVuelo, indice=-1;
-			cout<<"Ingrese el número del vuelo a cancelar (o -1 para salir al menú principal): ";
+			cout<<"Ingrese el numero del vuelo a cancelar (o -1 para salir al menu principal): ";
 			cin>>numeVuelo;
 			if(numeVuelo==-1){
 				return;
@@ -198,26 +198,33 @@ int main(){
 					cout<<"Solo para estar seguros... ¿Cancelar vuelo? Si (1) No (0): ";
 					cin>>confirmacion;
 					if(confirmacion==1){
+						//la matriz del vuelo tambien sera borrada
+						for(int fila=1;fila<=20;fila++){
+							for(int columna=1;columna<=6;columna++){
+								if(Plane[indice].EsqAsien[fila][columna]==1){
+									Plane[indice].EsqAsien[fila][columna]=0;
+								}
+							}
+						}
 						for(int i=indice;i<VueloEsp-1;i++){
 							Plane[i]=Plane[i+1];
 						}
-						VueloEsp--;//cuando se cancela un vuelo, VueloEsp reduce en -1 y los vuelos que se encontraban despues del vuelo borrado, recorren un espacio hacia atras
-						cout << "Vuelo cancelado exitosamente."<<endl;
+						VueloEsp--;//VueloEsp resta en -1 el tamaño de datosvuelo
+						cout<<"Vuelo cancelado exitosamente."<<endl;
 						system("pause");
 						return;
 					}else if(confirmacion==0){
-						cout<<"Cancelación de vuelo cancelada."<<endl;
+						cout<<"Cancelacion de vuelo cancelada."<<endl;
 						break;
 					}else{
-						cout<<"Opción inválida. Por favor, ingrese 1 para sí o 0 para no." << endl;
+						cout<<"Opcion invalida. Por favor, ingrese 1 para Si o 0 para No."<<endl;//repite la solicitud de confirmacion, si no se introduce una opcion diferente de 1 o 0
 					}
 				}
 			}else{
 				cout<<"Vuelo no encontrado."<<endl;
 			}
 		}
-	}
-	
+	}	
 	void reserva(){
 		system("cls");
 		int opc;
