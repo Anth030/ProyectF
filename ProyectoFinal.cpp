@@ -254,74 +254,73 @@ int main(){
 			break;
 		}
 	}
-	void generarReserva() {
-		int numeVuelo;
-		int indice=-1;
+	void generarReserva(){
 		system("cls");
 		mostrarvuelo();
-		cout<<"Ingrese el numero del vuelo para reservar: ";
-		cin >> numeVuelo;
-		for(int i=0;i<VueloEsp;i++){
-			if(Plane[i].numeVuelo==numeVuelo){
-				indice=i;//si no se cumple el if, indice seguira siendo -1
-				break;
-				}
-			}
-		if(indice==-1){
-			cout<<"Vuelo no encontrado."<<endl;
-			system("pause");
-			return;//vuelve al menu principal
-		}
-		cin.ignore();
-		cout<<"Ingrese nombres: ";
-		cin.getline(datosclient[reservPosic].nombres,30);
-		cout<<"Ingrese apellidos: ";
-		cin.getline(datosclient[reservPosic].apellidos,30);
-		cout<<"Ingrese DNI: ";
-		cin>>datosclient[reservPosic].DNI;
-		cout<<"Ingrese correo: ";
-		cin>>datosclient[reservPosic].correo;
-		cout<<"Ingrese telefono: ";
-		cin>>datosclient[reservPosic].telefono;
-		datosclient[reservPosic].avion=numeVuelo;//se asigna el numero del vuelo a la reserva del pasajero
-		datosclient[reservPosic].costoboleto=Plane[indice].precio;//igualmente al costo de su boleto
-		
-		int fila, columna;
-		while(true){
-			system("cls");
-			int cont=0;
-			for (int i=1; i<=20; i++) {
-				for (int j=1;j<=6;j++) {
-					if (j==4) {
-						cont++;
-						cout<< "   " <<cont<<"  ";//separadores y cont mostrara los numeros de las final
-					}
-					cout<<" "<<avionAsien[i][j];//avionAsien sera eliminado de las funciones en las que se involucro
-				}
-				cout<<"\n";
-			}
-				
-				cout<<"Escoja un lugar "<<endl;
-				cout<<"Fila: ";
-				cin>>fila;
-				cout<<"Columna: ";
-				cin>>columna;
-				
-				if(avionAsien[fila][columna]==0){//identificara si el espacio es un 0 (vacio)
-					avionAsien[fila][columna]=1;//si se cumple el if, la seleccion se volvera 1
-					datosclient[reservPosic].asiento[0]=fila;//se le da los numeros de las posiciones al asiento del datosclient que se esta usando
-					datosclient[reservPosic].asiento[1]=columna;
+		if(reservPosic<50){//para que no sobrepase la memoria de datosclient
+			int numeVuelo;
+			cout<<"Ingrese el número del vuelo para reservar: ";
+			cin>>numeVuelo;
+			int indice=-1;
+			for(int i=0;i<VueloEsp;i++){
+				if(Plane[i].numeVuelo==numeVuelo){
+					indice=i;
 					break;
-				}else{
-					cout<<"El asiento ya está ocupado. Seleccione otro asiento."<<endl;
-					system("pause");
 				}
 			}
-			
-			cout<<"Reserva generada correctamente."<<endl;
-			reservPosic++;//cuando se realice la reserva con exito, aumentara en 1 su valor y asi se podra llenar progresivamente
-			system("pause");
+			if(indice!=-1){
+				cin.ignore();
+				cout<<"Ingrese nombres: ";
+				cin.getline(datosclient[reservPosic].nombres,30);
+				cout<<"Ingrese apellidos: ";
+				cin.getline(datosclient[reservPosic].apellidos,30);
+				cout<<"Ingrese DNI: ";
+				cin>>datosclient[reservPosic].DNI;
+				cin.ignore();
+				cout<<"Ingrese correo: ";
+				cin.getline(datosclient[reservPosic].correo,20);
+				cout<<"Ingrese telefono: ";
+				cin>>datosclient[reservPosic].telefono;
+				datosclient[reservPosic].avion=numeVuelo;
+				datosclient[reservPosic].costoboleto=Plane[indice].precio;
+				system("cls");
+				//mostrando la matriz de asientos
+				cout<<"----Vista de Asientos del Avion---Nº"<<numeVuelo<<endl;
+				cout<<"    "<<endl;
+				for(int i=1;i<=20;i++){
+					cout<<"HH    ";
+					for(int j=1;j<=6;j++){
+						cout<<Plane[indice].EsqAsien[i][j]<<" ";
+						if(j==3){
+							cout<<"    ";
+						}
+					}
+					cout<<"    HH"<<endl;
+				}
+				cout<<" "<<endl;
+				int fila, columna;//para llenar asiento[0] y asiento[1]
+				cout<<"Ingrese el número de fila (1-20): ";
+				cin>>fila;
+				cout<<"Ingrese el número de columna (1-6): ";
+				cin>>columna;
+				if(Plane[indice].EsqAsien[fila][columna]==0){
+					Plane[indice].EsqAsien[fila][columna]=1;
+					datosclient[reservPosic].avion=numeVuelo;
+					datosclient[reservPosic].asiento[0]=fila;
+					datosclient[reservPosic].asiento[1]=columna;
+					reservPosic++;
+					cout<<"Reserva realizada con éxito."<<endl;
+				}else{
+					cout<<"El asiento ya está ocupado."<<endl;
+				}
+			}else{
+				cout<<"Vuelo no encontrado."<<endl;
+			}
+		}else{
+			cout<<"Se ha alcanzado el máximo número de reservas."<<endl;
 		}
+		system("pause");
+	}
 	void mostrarReserva(){//mostrara todas las reservas creadas
 		system("cls");
 		if(reservPosic==0){//si no hay reservas, manda un mensaje en la pantalla y vuelve al menu principal
