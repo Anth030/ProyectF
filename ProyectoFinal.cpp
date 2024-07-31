@@ -1,4 +1,4 @@
-//Las funciones que involucradon a "avionAsien" sera modificadas en la siguiente actualizacion
+//codigo casi finalizado
 #include <iostream>
 #include <cstring>
 using namespace std;
@@ -9,8 +9,7 @@ struct datosvuelo{
 	char destino[20];
 	int numeVuelo;
 	float precio;
-	int EsqAsien[21][7];//asigne esta matriz para que cada vuelo tenga su matriz de asientos
-	//porque la anterior matriz global se usaba en todos los mismo vuelos
+	int EsqAsien[21][7];//matriz que guarda los asientos de las reservas de cada vuelo 
 }Plane[6];
 
 struct datacliente{
@@ -21,7 +20,7 @@ struct datacliente{
 	int telefono;
 	int avion;
 	int costoboleto;
-	int asiento[2];//añadi el asiento que ocupara la reserva en el vuelo
+	int asiento[2];//guarda la fila y columna del asiento de una reserva
 }datosclient[50];
 
 void vuelo();
@@ -38,10 +37,9 @@ void mostrarReserva();
 void modificarReserva();
 void cancelarReserva();
 
-int reservPosic=0;//nueva variable global, funciona igual que VueloEsp, para comtrolar los espacios en struct datacliente
-int VueloEsp=0;//Este valor es para que al crearse un vuelo solo
-//avance en 1 el espacio de struct "datosvuelo" y asi generar vuelos individualmente
-//repitiendo la selecion de los menus
+int reservPosic=0;//variable global para controlar los espacios de datosclient
+int VueloEsp=0;//variable global que controla los espacios de Plane
+
 int main(){
 	int opcion;
 	bool repetir=true;
@@ -410,17 +408,64 @@ int main(){
 				datosclient[indice].avion=nuevoVuelo;
 				datosclient[indice].asiento[0]=fila;
 				datosclient[indice].asiento[1]=columna;
+				datosclient[indice].costoboleto=Plane[nuevoIndice].precio;
 				cout<<"Reserva modificada exitosamente."<<endl;
 			} else {
 				cout<<"El asiento ya está ocupado."<<endl;
 			}
 			system("pause");
 		}
+
 	void cancelarReserva(){
-		
+		system("cls");
+		if(reservPosic==0){
+			cout<<"No hay reservas para cancelar."<<endl;
+			system("pause");
+			return;
+		}
+		mostrarReserva();
+		int dni, indice=-1;
+		cout<<"Ingrese el DNI de la reserva a cancelar: ";
+		cin>>dni;
+		for(int i=0;i<reservPosic;i++){
+			if(datosclient[i].DNI==dni){
+				indice=i;
+				break;
+			}
+		}
+		if(indice==-1){
+			cout<<"Reserva no encontrada para el DNI "<<dni<<endl;
+			system("pause");
+			return;
+		}
+		//confirmacion para cancelacion
+		int confirmacion;
+		cout<<"¿Está seguro que desea cancelar la reserva? Si (1) No (0): ";
+		cin>>confirmacion;
+		if(confirmacion!=1){
+			cout<<"Cancelación de reserva abortada."<<endl;
+			system("pause");
+			return;
+		}
+		//libera el asiento del vuelo anterior
+		int numVuelo=datosclient[indice].avion;
+		int fila=datosclient[indice].asiento[0];
+		int columna=datosclient[indice].asiento[1];
+		for(int i=0;i<VueloEsp;i++){
+			if(Plane[i].numeVuelo==numVuelo){
+				Plane[i].EsqAsien[fila][columna]=0;
+				break;
+			}
+		}
 	}
-	
-	
+		//elimina la reserva
+		for(int i=indice;i<reservPosic-1;i++){
+			datosclient[i]=datosclient[i+1];
+		}
+		reservPosic--;
+		cout<<"Reserva cancelada exitosamente."<<endl;
+		system("pause");
+	}
 	void precios(){
 		while(true){
 			system("cls");
