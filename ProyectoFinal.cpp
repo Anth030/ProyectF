@@ -1,3 +1,4 @@
+//Las funciones que involucradon a "avionAsien" sera modificadas en la siguiente actualizacion
 #include <iostream>
 #include <cstring>
 using namespace std;
@@ -8,6 +9,8 @@ struct datosvuelo{
 	char destino[20];
 	int numeVuelo;
 	float precio;
+	int EsqAsien[21][7];//asigne esta matriz para que cada vuelo tenga su matriz de asientos
+	//porque la anterior matriz global se usaba en todos los mismo vuelos
 }Plane[6];
 
 struct datacliente{
@@ -35,7 +38,6 @@ void mostrarReserva();
 void modificarReserva();
 void cancelarReserva();
 
-int avionAsien[21][7]={0};//Este arreglo se mostrara al momento de seleccionar el asiento para la reserva(mas detalles en la funcion generarReserva)
 int reservPosic=0;//nueva variable global, funciona igual que VueloEsp, para comtrolar los espacios en struct datacliente
 int VueloEsp=0;//Este valor es para que al crearse un vuelo solo
 //avance en 1 el espacio de struct "datosvuelo" y asi generar vuelos individualmente
@@ -64,6 +66,10 @@ int main(){
 		case 4:
 			repetir=false;
 			break;
+		default:
+			cout<<"Opcion invalida. Intentelo de nuevo."<<endl;
+			system("pause");
+			break;
 		}
 	} while(repetir);
 	return 0;
@@ -90,7 +96,12 @@ int main(){
 			break;
 		case 4:
 			cancelarvuelo();
+			break;
 		case 5:
+			break;
+		default:
+			cout<<"Opcion invalida. Intentelo de nuevo."<<endl;
+			system("pause");
 			break;
 		}
 	}
@@ -215,6 +226,7 @@ int main(){
 		cout<<"2.2. Mostrar reservas"<<endl;
 		cout<<"2.3. Modificar reservas"<<endl;
 		cout<<"2.4. Cancelar reserva"<<endl;
+		cout<<"2.5. Volver"<<endl;
 		cin>>opc;
 		switch(opc){
 		case 1:
@@ -229,6 +241,10 @@ int main(){
 		case 4:
 			cancelarReserva();
 		case 5:
+			break;
+		default:
+			cout<<"Opcion invalida. Intentelo de nuevo."<<endl;
+			system("pause");
 			break;
 		}
 	}
@@ -274,7 +290,7 @@ int main(){
 						cont++;
 						cout<< "   " <<cont<<"  ";//separadores y cont mostrara los numeros de las final
 					}
-					cout<<" "<<avionAsien[i][j];//separador, para que los 0 no se vean tan juntos
+					cout<<" "<<avionAsien[i][j];//avionAsien sera eliminado de las funciones en las que se involucro
 				}
 				cout<<"\n";
 			}
@@ -307,7 +323,6 @@ int main(){
 			system("pause");
 			return;
 		}
-		
 		cout<<"------ RESERVAS ------"<<endl;
 		for(int i=0;i<reservPosic;i++){
 			cout<<"Reserva Nº"<<i+1<<endl;
@@ -323,8 +338,94 @@ int main(){
 		}
 		system("pause");
 	}	
-	void modificarReserva(){
+	void modificarReserva() {
+		system("cls");
+		if(reservPosic==0){
+			cout<<"No hay reservas para modificar."<<endl;
+			system("pause");
+			return;
+		}
 		
+		int numeVuelo;
+		cout<<"Ingrese el número del vuelo actual de la reserva a modificar: ";
+		cin>>numeVuelo;
+		
+		int indice=-1;
+		for(int i=0;i<reservPosic;i++){
+			if(datosclient[i].avion==numeVuelo){
+				indice=i;
+				break;
+			}
+		}
+		if(indice==-1){
+			cout<<"Reserva no encontrada para el vuelo número "<<numeVuelo<<endl;
+			system("pause");
+			return;
+		}
+		// muestra los datos de la reserva antes de hacer el cambio
+		cout<<"Modificando reserva para el vuelo Nº"<<numeVuelo<<endl;
+		cout<<"Datos actuales:"<<endl;
+		cout<<"Nombre: "<<datosclient[indice].nombres<<endl;
+		cout<<"Apellidos: "<<datosclient[indice].apellidos<<endl;
+		cout<<"DNI: "<<datosclient[indice].DNI<<endl;
+		cout<<"Correo: "<<datosclient[indice].correo<<endl;
+		cout<<"Teléfono: "<<datosclient[indice].telefono<<endl;
+		cout<<"Asiento actual: Fila "<<datosclient[indice].asiento[0]<<", Columna "<<datosclient[indice].asiento[1]<<endl;
+		//variable para seleccionar nuevo vuelo
+		int nuevoVuelo;
+		cout<<"Ingrese el número del nuevo vuelo al que desea cambiar la reserva: ";
+		cin>>nuevoVuelo;
+		
+		int nuevoIndice=-1;
+		for(int i=0;i<VueloEsp;i++){
+			if(Plane[i].numeVuelo==nuevoVuelo){
+				nuevoIndice=i;
+				break;
+			}
+		}
+		if(nuevoIndice==-1){
+			cout<<"Nuevo vuelo no encontrado."<<endl;
+			system("pause");
+			return;
+		}
+		//esto permite liberar el asiento del vuelo anterior
+		avionAsien[datosclient[indice].asiento[0]][datosclient[indice].asiento[1]] = 0;
+		
+		//asigna el nuevo vuelo
+		datosclient[indice].avion = nuevoVuelo;
+		datosclient[indice].costoboleto = Plane[nuevoIndice].precio;
+		//escoge el asiento en el nuevo vuelo
+		int fila, columna;
+		while(true){
+			system("cls");
+			int cont=0;
+			for(int i=1;i<=20;i++){
+				for(int j=1;j<=6;j++){
+					if(j==4){
+						cont++;
+						cout<<"   "<<cont<<"  ";
+					}
+					cout<<" "<<avionAsien[i][j];
+				}
+				cout<<"\n";
+			}
+			cout<<"Escoja un nuevo lugar para el nuevo vuelo"<<endl;
+			cout<<"Fila: ";
+			cin>>fila;
+			cout<<"Columna: ";
+			cin>>columna;
+			if(avionAsien[fila][columna]==0){
+				avionAsien[fila][columna]=1;
+				datosclient[indice].asiento[0]=fila;
+				datosclient[indice].asiento[1]=columna;
+				break;
+			}else{
+				cout<<"El asiento ya está ocupado. Seleccione otro asiento."<<endl;
+				system("pause");
+			}
+		}
+		cout<<"Reserva modificada exitosamente."<<endl;
+		system("pause");
 	}
 	void cancelarReserva(){
 		
